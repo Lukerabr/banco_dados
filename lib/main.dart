@@ -42,18 +42,38 @@ class _HomeState extends State<Home> {
     Database db = await _recuperarBancoDados();
 
     Map<String, dynamic> dadosUsuario = {
-      "nome" : "Kharen Paes de Albuquerque",
-      "idade" : 27
+      "nome" : "Teste Nome Duplicação",
+      "idade" : 35
     };
     int id = await db.insert("usuarios", dadosUsuario);
     print("salvo: $id");
 
   }
 
+  _listarUsuarios() async{
+
+    Database db = await _recuperarBancoDados();
+    //String sql = "SELECT * FROM usuarios WHERE idade = 28";
+    String sql = "SELECT * FROM usuarios WHERE idade = 40 OR idade = 28";
+    List usuarios = await db.rawQuery(sql);
+
+    for(var usuario in usuarios){
+      print(
+        "item id: " + usuario["id"].toString() +
+        " nome: " + usuario["nome"] +
+        " idade " + usuario["idade"].toString()
+      );
+    }
+
+    //print("Usuários: " + usuarios.toString());
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    _salvar();
+    //_salvar();
+    _listarUsuarios();
 
     return Container();
   }
